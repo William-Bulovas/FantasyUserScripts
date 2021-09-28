@@ -19,25 +19,45 @@ const getHttp = (url) => {
   });
 }
  
-generateTiers = async (removeTeamNames = false) => {
+const scoring = {
+    PPR: "PPR",
+    Standard: "STANDARD",
+    Half: "HALF"
+}
+ 
+const teamNames = {
+    standard: "standard",
+    yahoo: "yahoo",
+    espn: "espn"
+}
+ 
+const suffixForScoring = {
+    "PPR": "-PPR",
+    "HALF": "-HALF",
+    "STANDARD": ""
+}
+ 
+const generateTiers = async (scoring, defParse = teamNames.standard) => {
   const tierMap = {};
   
-  const wrPromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_WR.txt")
+  const wrPromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_WR" + suffixForScoring[scoring] + ".txt")
     .then(response => parseTierText(response.responseText))
   	.then(wrTierMap => Object.assign(tierMap, wrTierMap));
-  const rbPromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_RB.txt")
+  const rbPromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_RB" + suffixForScoring[scoring] + ".txt")
     .then(response => parseTierText(response.responseText))
   	.then(rbTierMap => Object.assign(tierMap, rbTierMap));
   const qbPromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_QB.txt")
     .then(response => parseTierText(response.responseText))
   	.then(qbTierMap => Object.assign(tierMap, qbTierMap));
-  const tePromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_TE.txt")
+  const tePromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_TE" + suffixForScoring[scoring] + ".txt")
     .then(response => parseTierText(response.responseText))
   	.then(teTierMap => Object.assign(tierMap, teTierMap));
   const dstPromise = getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/text_DST.txt")
     .then(response => {
-        if (removeTeamNames) {
-            return parseTierText(response.responseText, santizeTeamString);
+        if (defParse === teamNames.yahoo) {
+            return parseTierText(response.responseText, santizeTeamYahooString);
+        } else if (defParse === teamNames.espn) {
+            return parseTierText(response.responseText, santizeTeamEspnString);
         }
         return parseTierText(response.responseText)
     })
@@ -79,13 +99,27 @@ const santizeString = (str) => {
 	return str.toLowerCase()
     				.replace(/\./g, '')
   					.replace(/'/g, '')
+  					.replace(' iii', '')
   					.replace(' ii', '');
 };
  
-const santizeTeamString = (str) => {
+const santizeTeamYahooString = (str) => {
   str = str.substring(0, str.lastIndexOf(" ")); 
+  
+  if (str === "Washington Football") {
+    str = "Washington";
+  }
   
   return santizeString(str);
 }
-
-
+ 
+const santizeTeamEspnString = (str) => {
+  str = str.substring(str.lastIndexOf(" ") + 1, str.length); 
+  
+  if (str === "Team") {
+    str = "Washington";
+  }
+    
+  return santizeString(str);
+}
+ 

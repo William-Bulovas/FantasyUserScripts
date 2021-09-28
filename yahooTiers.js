@@ -1,61 +1,53 @@
 // ==UserScript==
 // @name     Yahoo Team BorisChen
 // @description This script adds a row to the team page in Yahoo Football Fantasy with the boris chen tier
-// @version  1.3
+// @version  1.7
 // @grant         GM.xmlHttpRequest
 // @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
 // @require https://greasyfork.org/scripts/31940-waitforkeyelements/code/waitForKeyElements.js?version=209282
-// @require https://greasyfork.org/scripts/431916-borischentiers/code/BorisChenTiers.js?version=967348
+// @require https://greasyfork.org/scripts/431916-borischentiers/code/BorisChenTiers.js?version=968460
 // @include https://football.fantasysports.yahoo.com/f1/*/*/team*
 // @include /^https?:\/\/football\.fantasysports\.yahoo\.com\/f1\/.*\/[0-9][0-9]?/
 // @include https://football.fantasysports.yahoo.com/f1/*/players*
+// @namespace https://greasyfork.org/users/812226
 // ==/UserScript==
-
-const TIER_TINTS = [
-	"#1e6bb9",
-  "#3479c0",
-  "#4a88c7",
-  "#6197ce",
-  "#78a6d5",
-  "#8eb5dc",
-  "#a5c3e3",
-  "#aec9e5",
-  "#b7cfe8",
-  "#c0d5eb",
-  "#c9dbee",
-  "#d2e1f1",
-  "#dbe7f3",
-  "#e4edf6",
-  "#edf3f9",
-  "#f6f9fc",
-  "#ffffff"
-];
-
+  
 (async () => {  
-  const tierMap = await generateTiers(true);
-
+  const tierMap = await generateTiers(scoring.Standard, teamNames.yahoo);
+    
+  updateRows(tierMap);
+})();
+  
+const updateRows = (tierMap) => {
   waitForKeyElements (
     "#statTable0", 
     (jNode) => {
-      appendDataToTable(jNode, tierMap);
+      addHeader(jNode);
+      appendDataToTable(jNode, tierMap, false);
     }
   );  
   waitForKeyElements (
     "#statTable1",
     (jNode) => {
-      appendDataToTable(jNode, tierMap);
+      appendDataToTable(jNode, tierMap, true);
     }
   );
-  
+  waitForKeyElements (
+    "#statTable2",
+    (jNode) => {
+      appendDataToTable(jNode, tierMap, true);
+    }
+  );
   waitForKeyElements (
     "#players-table",
     (jNode) => {
-      appendDataToTable(jNode, tierMap);
+      addHeader(jNode);
+      appendDataToTable(jNode, tierMap, false);
     }
   );
-})();
-
-const appendDataToTable = (jNode, data) => {  
+}
+  
+const addHeader = (jNode) => {
   const rows = jNode.children().find('tr');
     
   let rowToInsert = 1;
@@ -64,11 +56,31 @@ const appendDataToTable = (jNode, data) => {
     rowToInsert = 2;
   }
   
+  $($($(rows.get(1)).children()).eq(rowToInsert)).after(createYahooStyledHeaderWithSelect('BorisChen Tier'));
+  $('#Tier-ScoringSelect').on('change', async function() {
+    const tierMap = await generateTiers(scoring[this.value], teamNames.yahoo);
+    
+    appendDataToTable($("#statTable0"), tierMap, false);
+    appendDataToTable($("#players-table"), tierMap, false);
+  });
+}
+  
+const appendDataToTable = (jNode, data, addHeader) => {  
+  const rows = jNode.children().find('tr');
+      
+  let rowToInsert = 1;
+      
   rows.each((index, obj) => {
     if (index == 0) {
       
     } else if (index == 1) {
-      $($($(obj).children()).eq(rowToInsert)).after(createYahooStyledHeader('BorisChen Tier'));
+      if ($(obj).children().get(1).className.includes('Js-hidden')) {
+        rowToInsert = 2; 
+      }
+      
+      if (addHeader) {
+        $($($(obj).children()).eq(rowToInsert)).after(createYahooStyledHeader('BorisChen Tier'));        
+      }
     } else {
       let tier = '-';
       const name = getName(obj);
@@ -78,37 +90,49 @@ const appendDataToTable = (jNode, data) => {
       } else {
         console.log("could not match this player: " + name);
       }
-                  
-      $($($(obj).children()).eq(rowToInsert)).after(createTierCol(tier));
+      
+      if ($(obj).find("#BorisChenTier").length > 0) {
+        $(obj).find("#BorisChenTier").text(tier);
+      } else {
+        $($($(obj).children()).eq(rowToInsert)).after(createTierCol(tier));
+      }
     }
   });
 };
-
-
-const createYahooStyledHeader = (title) => {
- return `<th class="ys-stat Hy(m)" title="${title}">
-					<div class="ys-stat Whs-nw T-0 Pos-a P-4">
-						${title}
-						<i class="Icon Wpx-10 ys-dir0"></i>
-					</div>
-				</th>`
-};
-
-const createTierCol = (tier) => {
-  const colour = tier < TIER_TINTS.length ? TIER_TINTS[tier - 1]
-  								: TIER_TINTS[TIER_TINTS.length - 1];
   
-	return `<td class="Alt Ta-c Bdrstart"
-							style="background-color: ${colour}; opacity: 0.75">
-						${tier}
-					</td>`; 
+const createYahooStyledHeaderWithSelect = (title) => {
+  return `<th class="ys-stat Hy(m)" title="${title}">
+          <div class="ys-stat Whs-nw T-0 Pos-a P-4">
+            ${title}
+            <br/>
+            <select name="Tier-ScoringSelect" id="Tier-ScoringSelect">
+              <option value="Standard">Std</option>
+              <option value="PPR">PPR</option>
+              <option value="Half">Half</option>
+            </select>
+          </div>
+        </th>`
 };
-
+  
+const createYahooStyledHeader = (title) => {
+  return `<th class="ys-stat Hy(m)" title="${title}">
+          <div class="ys-stat Whs-nw T-0 Pos-a P-4">
+            ${title}
+          </div>
+        </th>`
+};
+  
+const createTierCol = (tier) => {
+  return `<td id="BorisChenTier"
+              class="Alt Ta-c Bdrstart">
+            ${tier}
+          </td>`; 
+};
+  
 const getName = (jQueryNode) => {  
   const nameCol = $($(jQueryNode).find('.player'));
-	const nameRow = $(nameCol.find('.ysf-player-name'));
+  const nameRow = $(nameCol.find('.ysf-player-name'));
   const name = $(nameRow.children().get(0)).text();
     
   return santizeString(name);
 };
-

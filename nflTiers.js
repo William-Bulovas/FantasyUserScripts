@@ -1,29 +1,31 @@
 // ==UserScript==
 // @name     NFL.com BorisChenTiers
 // @description This script adds a row to the team and player page in NFL.com Football Fantasy website with the boris chen tier
-// @version  1
+// @version  1.5
 // @grant         GM.xmlHttpRequest
 // @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
 // @require https://greasyfork.org/scripts/31940-waitforkeyelements/code/waitForKeyElements.js?version=209282
-// @require https://greasyfork.org/scripts/431916-borischentiers/code/BorisChenTiers.js?version=967341
-// @include https://*.fantasy.nfl.com/league/*/team/*
-// @include https://*.fantasy.nfl.com/league/9504752/players
+// @require https://greasyfork.org/scripts/431916-borischentiers/code/BorisChenTiers.js?version=968797
+// @include https://*fantasy.nfl.com/league/*/team/*
+// @exclude https://*fantasy.nfl.com/league/*/team/*/gamecenter*
+// @include https://*fantasy.nfl.com/league/*/players
+// @namespace https://greasyfork.org/users/812226
 // ==/UserScript==
-
+  
 (async () => {  
-  const tierMap = await generateTiers();
+  const tierMap = await generateTiers(scoring.Standard);
   
   console.log(tierMap);
-
+  
   waitForKeyElements (
     ".tableType-player", 
     (jNode) => {
-      appendDataToTable(jNode, tierMap);
+      appendDataToTable(jNode, tierMap, true);
     }
   );  
 })();
-
-const appendDataToTable = (jNode, data) => {  
+  
+const appendDataToTable = (jNode, data, addHeader) => {  
   const rows = jNode.children().find('tr');
     
   
@@ -31,7 +33,15 @@ const appendDataToTable = (jNode, data) => {
     if (index == 0) {
       
     } else if (index == 1) {
-      $($($(obj).children()).eq(1)).after(createNFLStyledHeader('BorisChen Tier'));
+      if (addHeader) {
+        $($($(obj).children()).eq(1)).after(createNFLStyledHeaderWithSelect('BorisChen Tier'));
+      
+        $('#Tier-ScoringSelect').on('change', async function() {
+          const tierMap = await generateTiers(scoring[this.value]);
+  
+          appendDataToTable($(".tableType-player"), tierMap, false);
+        });
+      }
     } else {
       let tier = '-';
       const name = getName(obj);
@@ -41,25 +51,40 @@ const appendDataToTable = (jNode, data) => {
       } else {
         console.log("could not match this player: " + name);
       }
-                  
-      $($($(obj).children()).eq(1)).after(createTierCol(tier));
+      
+      if ($(obj).find("#BorisChenTier").length > 0) {
+        $(obj).find("#BorisChenTier").text(tier);
+      } else {
+        $($($(obj).children()).eq(1)).after(createTierCol(tier));
+      }
     }
   });
 };
-
-
+  
+const createNFLStyledHeaderWithSelect = (title) => {
+  return `<th class="BorisChenTierHeader">
+          ${title}
+          <select name="Tier-ScoringSelect" id="Tier-ScoringSelect">
+            <option value="Standard">Std</option>
+            <option value="PPR">PPR</option>
+            <option value="Half">Half</option>
+          </select>
+        </th>`
+};
+  
 const createNFLStyledHeader = (title) => {
- return `<th class="BorisChenTier">
-						${title}
-				</th>`
+  return `<th class="BorisChenTierHeader">
+          ${title}
+        </th>`
 };
-
+  
 const createTierCol = (tier) => {
-	return `<td class="playerOpponent">
-						<span>${tier}</span>
-					</td>`; 
+  return `<td id="BorisChenTier"
+              class="playerOpponent">
+            <span>${tier}</span>
+          </td>`; 
 };
-
+  
 const getName = (jQueryNode) => {  
   const name = $($(jQueryNode).find('.playerNameFull')).text();
     
