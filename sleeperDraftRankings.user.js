@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Yahoo Draft Boris Chen
-// @namespace    YahooDraft
+// @name         Sleeoer Draft Boris Chen
+// @namespace    SleeperDraft
 // @version      1
 // @author       https://github.com/William-Bulovas
 // @grant        GM.xmlHttpRequest

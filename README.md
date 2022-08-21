@@ -9,7 +9,7 @@ All credit to BorisChen for the rankings and Tiers that are used: http://www.bor
 | Yahoo Team Tiers   | Shows the tiers of players in the team and free agency page |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/yahooTiers.user.js)|[GreasyFork](https://greasyfork.org/en/scripts/431913-yahoo-team-borischen)|
 | Yahoo draft Tiers  | Shows the tiers and rankings of players in the draft page   |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/yahooDraftRankings.user.js)||
 | Sleeper team Tiers | Shows the tiers of players in the team and free agency page |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/sleeperTiers.user.js)|[GreasyFork](https://greasyfork.org/en/scripts/432085-sleeper-borischen-tiers)|
-| Sleeper Draft Tiers | Shows the tiers and rankings of players in the draft page |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/sleeperDraftRankings.user.js)|[GreasyFork](https://greasyfork.org/en/scripts/432085-sleeper-borischen-tiers)|
+| Sleeper Draft Tiers | Shows the tiers and rankings of players in the draft page |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/sleeperDraftRankings.user.js)||
 | NFL.com team Tiers | Shows the tiers of players in the team and free agency page |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/nflTiers.user.js)|[GreasyFork](https://greasyfork.org/en/scripts/432079-espn-borischentiers)|
 | ESPN team Tiers    | Shows the tiers of players in the team and free agency page |[Github](https://github.com/William-Bulovas/FantasyUserScripts/raw/main/nflTiers.user.js)|[GreasyFork](https://greasyfork.org/en/scripts/432079-espn-borischentiers)|
 
