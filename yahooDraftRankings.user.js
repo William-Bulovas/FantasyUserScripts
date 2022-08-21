@@ -112,6 +112,8 @@ const updateDraftScoutSuggests = (jNode, queue) => {
     if (!$(jNode).is(":visible")) return;
     if ($(jNode).children() === 6) return;
 
+    if (!$(jNode).find("#assistant-recommendations").length) return;
+
     const qbQueue = queue.filter(data => data["Position"] === "QB");
     const rbQueue = queue.filter(data => data["Position"] === "RB");
     const wrQueue = queue.filter(data => data["Position"] === "WR");
