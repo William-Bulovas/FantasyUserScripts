@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name     Yahoo Draft Boris Chen
+// @name         Yahoo Draft Boris Chen
 // @namespace    YahooDraft
 // @version      1
 // @author       https://github.com/William-Bulovas
-// @grant         GM.xmlHttpRequest
-// @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
-// @require https://gist.github.com/raw/2625891/waitForKeyElements.js
-// @require file:///Users/williambulovas/workspace/FantasyUserScripts/borisChenDraftRankings.js
-// @match https://football.fantasysports.yahoo.com/draftclient/*
+// @grant        GM.xmlHttpRequest
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
+// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require      https://raw.githubusercontent.com/William-Bulovas/FantasyUserScripts/main/borisChenDraftRankings.js
+// @match        https://football.fantasysports.yahoo.com/draftclient/*
 // ==/UserScript==
 
 (async () => {
@@ -109,6 +109,7 @@ const updateDraftScoutSuggests = (jNode, queue) => {
     queue = Object.values(queue);
     console.log(queue);
     if (!$(jNode).is(":visible")) return;
+    if ($(jNode).children() === 6) return;
 
     const qbQueue = queue.filter(data => data["Position"] === "QB");
     const rbQueue = queue.filter(data => data["Position"] === "RB");
