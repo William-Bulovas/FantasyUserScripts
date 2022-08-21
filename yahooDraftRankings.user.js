@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 (async () => {
-    const data = await getDraftRankings();
+    const data = await getDraftRankings(scoring.Standard);
 
     const queue = JSON.parse(JSON.stringify(data));
 

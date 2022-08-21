@@ -6,7 +6,7 @@
 // @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
 // @require https://greasyfork.org/scripts/31940-waitforkeyelements/code/waitForKeyElements.js?version=209282
 // @require https://greasyfork.org/scripts/431916-borischentiers/code/BorisChenTiers.js?version=968460
-// @include https://sleeper.app/leagues/*
+// @include https://sleeper.com/leagues/*
 // @namespace https://greasyfork.org/users/812226
 // ==/UserScript==
 
@@ -18,8 +18,8 @@
     waitForKeyElements (
         ".team-roster", 
         (jNode) => {
-        addHeader(jNode);
-        appendDataToTable(jNode, tierMap);
+            addHeader(jNode);
+            appendDataToTable(jNode, tierMap);
         }
     );  
 })();
@@ -28,8 +28,6 @@ const addHeader = (jNode) => {
     const header = jNode.find(".title-row");
 
     const headerRow = header.find(".row");
-
-    console.log(headerRow);
 
     headerRow.prepend(createSleeperStyledHeader('BORISCHEN TIER'));
 
@@ -44,24 +42,23 @@ const addHeader = (jNode) => {
 
 const appendDataToTable = (jNode, data) => {  
     const rows = jNode.find('.team-roster-item');
-        
 
     rows.each((index, obj) => {
         let tier = '-';
         const name = getName(obj);
 
         if (data[name] !== null && data[name] !== undefined) {
-        tier = data[name] + 1;
+            tier = data[name] + 1;
         } else {
-        console.log("could not match this player: " + name);
+            console.log("could not match this player: " + name);
         }
         
         const row = $($(obj).find(".row"));
 
         if ($(obj).find("#BorisChenTier").length > 0) {
-        $(obj).find("#BorisChenTier").text(tier);
+            $(obj).find("#BorisChenTier").text(tier);
         } else {
-        row.prepend(createTierCol(tier));
+            row.prepend(createTierCol(tier));
         }
     });
 };

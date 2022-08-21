@@ -6,12 +6,25 @@
 // @grant         GM.xmlHttpRequest
 // ==/UserScript==
 
-const getDraftRankings = async () => {
-    return getHttp("https://s3-us-west-1.amazonaws.com/fftiers/out/weekly-ALL.csv")
+const getDraftRankings = async (scoring) => {
+    return getHttp(`https://s3-us-west-1.amazonaws.com/fftiers/out/weekly-ALL${suffixForScoring[scoring]}.csv`)
         .then(response => {
             return parseCSV(response.responseText);
         })
 }
+
+const scoring = {
+    PPR: "PPR",
+    Standard: "STANDARD",
+    Half: "HALF"
+}
+
+const suffixForScoring = {
+    "PPR": "-PPR",
+    "HALF": "-HALF-PPR",
+    "STANDARD": ""
+}
+
  
 const getHttp = (url) => {
     return new Promise(resolve => {
