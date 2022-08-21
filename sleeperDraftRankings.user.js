@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Sleeoer Draft Boris Chen
+// @name         Sleeper Draft Boris Chen
 // @namespace    SleeperDraft
 // @version      1
 // @author       https://github.com/William-Bulovas
