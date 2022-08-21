@@ -8,6 +8,7 @@
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @require      https://raw.githubusercontent.com/William-Bulovas/FantasyUserScripts/main/borisChenDraftRankings.js
 // @match        https://football.fantasysports.yahoo.com/draftclient/*
+// @updateURL    https://raw.githubusercontent.com/William-Bulovas/FantasyUserScripts/main/yahooDraftRankings.js
 // ==/UserScript==
 
 (async () => {
