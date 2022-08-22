@@ -59,7 +59,7 @@ const appendDataToTable = (jNode) => {
     const rows = jNode.children().find('.player-rank-item2');
 
     rows.each((index, obj) => {
-        addData(obj, data);
+        addData(obj);
     });
 }
 
@@ -106,8 +106,7 @@ const listenToChanges = (jNode, queue) => {
                 mutation.addedNodes.forEach(node => {
                     console.log(node);
                     if ($(node).find(".player-rank-item2").length) {
-                        console.log("here");
-                        addData(node, data);
+                        addData(node);
                     }
                 });
 
@@ -125,7 +124,6 @@ const listenToChanges = (jNode, queue) => {
                         } else if (name2 in queue) {
                             delete queue[name2];
                         }
-                        updateDraftScoutSuggests(suggestionsNode, queue);
                     }
                 })
             }
