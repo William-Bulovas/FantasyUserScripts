@@ -52,7 +52,7 @@ const appendHeader = (jNode) => {
     <div class="fixedDataTableCellLayout_wrap3 public_fixedDataTableCell_wrap3">
     <div class="public_fixedDataTableCell_cellContent">
     <span class="sorter" style="height: 24px; line-height: 24px;">
-        RANK
+       <small>BC RANK</small>
     </span></div></div></div></div></div>`);
 
     $(playerSection).append(`
@@ -62,7 +62,7 @@ const appendHeader = (jNode) => {
     <div class="fixedDataTableCellLayout_wrap3 public_fixedDataTableCell_wrap3">
     <div class="public_fixedDataTableCell_cellContent">
     <span class="sorter" style="height: 24px; line-height: 24px;">
-        TIER
+       <small>BC TIER</small>
     </span></div></div></div></div></div>`);
 }
   
