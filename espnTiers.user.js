@@ -47,7 +47,7 @@ const appendDataToTable = (jNode, data, addHeader) => {
 
     rows.each((index, obj) => {
         if (index == 0) {
-        $($(obj).children().get(1)).attr('colspan', 3);
+            $($(obj).children().get(1)).attr('colspan', 3);
         } else if (index == 1) {
         if (addHeader) {
                     $($($(obj).children()).eq(insertAt)).after(createESPNStyledHeader('BorisChen <br/> Tier'));
@@ -65,9 +65,9 @@ const appendDataToTable = (jNode, data, addHeader) => {
             }
 
             if ($(obj).find("#BorisChenTier").length > 0) {
-            $(obj).find("#BorisChenTier").text(tier);
+                $(obj).find("#BorisChenTier").text(tier);
             } else {
-            $($($(obj).children()).eq(insertAt)).after(createTierCol(tier));
+                $($($(obj).children()).eq(insertAt)).after(createTierCol(tier));
             }
         }
         }

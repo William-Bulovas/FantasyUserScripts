@@ -8,7 +8,7 @@
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @require      https://raw.githubusercontent.com/William-Bulovas/FantasyUserScripts/main/borisChenDraftRankings.js
 // @match        https://sleeper.com/draft/nfl/*
-// @updateURL    https://raw.githubusercontent.com/William-Bulovas/FantasyUserScripts/main/yahooDraftRankings.user.js
+// @updateURL    https://raw.githubusercontent.com/William-Bulovas/FantasyUserScripts/main/sleeperDraftRankings.user.js
 // ==/UserScript==
 
 let data = new Object();
