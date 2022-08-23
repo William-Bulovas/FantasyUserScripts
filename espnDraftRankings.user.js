@@ -34,7 +34,6 @@ const addScoringControl = (jNode) => {
 
     $('#Tier-ScoringSelect').on('change', async function() {
         data = await getDraftRankings(scoring[this.value]);
-        console.log("here")
         appendDataToTable(jNode);
     });
 }
@@ -85,7 +84,6 @@ const addData = (obj) => {
         tier = data[name]["Tier"];
         rank = data[name]["Rank"];
     } else {
-        // console.log(obj);
         console.log("could not match this player: " + name);
     }
 
