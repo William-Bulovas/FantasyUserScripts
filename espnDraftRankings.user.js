@@ -135,7 +135,7 @@ const listenToChanges = (jNode, suggestionsNode, data, queue) => {
                 mutation.addedNodes.forEach(node => {
                     if ($(node).find('.player-news').length && $(node).find('.player-news').text() == $(node).find('.player-news').attr('title')) {
                         appendDataToTable(jNode);
-                                        }
+                    }
                 });
 
                 mutation.removedNodes.forEach(node => {
